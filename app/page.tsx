@@ -1,20 +1,22 @@
 'use client'
 
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useRef, useState} from "react";
 import Markdown from "react-markdown";
-import {PaperAirplaneIcon} from "@heroicons/react/24/outline";
+import Form from "@/app/ui/form";
+import Loading from "@/app/ui/loading";
 
 
 export default function Home() {
   const [prompt, setPrompt] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
-  // State to manage loading
+  const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setAiResponse('');
+    setResponse('');
+    setPrompt('')
 
     const formData = new FormData(e.currentTarget);
     const prompt = formData.get('prompt') as string;
@@ -38,44 +40,36 @@ export default function Home() {
         const { value, done } = await reader.read();
         if (done) break;
 
-        setAiResponse((prev) => prev + value);
+        setResponse((prev) => prev + value);
       }
+
     } catch (error) {
       console.error('Error fetching stream:', error);
-      setAiResponse('Error: Could not get a response.');
+      setResponse('Error: Could not get a response.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = "auto"; // reset
+    textarea.style.height = textarea.scrollHeight + "px"; // grow with content
+  }, [prompt]);
+
   return (
-    <div className="p-20 flex flex-col">
-      <h1 className={`text-2xl font-bold flex justify-center m-2 p-10`}>
-        Let's plan your next trip with us!
+    <div className="p-5 md:p-20 flex flex-col">
+      <h1 className={`text-2xl font-bold flex justify-center m-2 p-5 md:p-10`}>
+        Let&#39;s plan your next trip with us!
       </h1>
-      <form onSubmit={handleSubmit}>
-        <div className="relative">
-          <input
-              id="input"
-              name="prompt"
-              type="text"
-              value={prompt}
-              placeholder="Tell us more about your trip"
-              className="block border rounded-full border-gray-200 w-full h-10 py-2 pl-10 outline-2 placeholder:text-gray-500"
-              required
-              onChange={(e) => setPrompt(e.target.value)}
-              disabled={isLoading}
-          />
-          <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2  h-[18px] w-[18px] hover:cursor-pointer">
-            <PaperAirplaneIcon/>
-          </button>
-        </div>
-      </form>
-      {isLoading && aiResponse.length === 0 && <div>Loading...</div>}
-      {aiResponse && (
-          <div className="w-full mt-5 p-5 border border-gray-300 rounded-lg">
+      <Form submitAction={handleSubmit} prompt={prompt} setPromptAction={setPrompt} textareaRef={textareaRef}/>
+      {isLoading && response.length === 0 && <Loading/>}
+      {response && (
+          <div className="w-full mt-5 p-2 flex flex-col">
             <Markdown>
-              {aiResponse}
+              {response}
             </Markdown>
           </div>
       )}
