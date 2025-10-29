@@ -25,7 +25,7 @@ export default function Form({ submitAction, textareaRef, prompt, setPromptActio
 
   return (
       <form onSubmit={submitAction}>
-        <div className="flex flex-row border border-[#dadce0] rounded-3xl shadow-[2px_2px_2px_2px_#F0EBEB] inset-shadow-[2px_2px_#FAFAFA]">
+        <div className="flex flex-row border border-[#dadce0] rounded-3xl shadow-[4px_4px_8px_#666666,-4px_-4px_6px_#ffffff] hover:shadow-[4px_4px_8px_#ffffff,-4px_-4px_6px_#666666] transition duration-300 ease-in-out bg-gray-200">
           <textarea
               id="prompt"
               name="prompt"
