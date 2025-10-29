@@ -24,11 +24,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-sm md:text-lg`}
-      >
-        {children}
-      </body>
+    <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-sm md:text-lg min-h-screen relative`}
+    >
+    <div
+        className="absolute inset-0 bg-[url('/mobile_background.png')] md:bg-[url('/desktop_background.png')] bg-cover bg-center filter blur-sm scale-100"
+        aria-hidden="true"
+    />
+    <div className="relative z-10">{children}</div>
+    </body>
     </html>
   );
 }

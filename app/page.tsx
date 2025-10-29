@@ -60,19 +60,21 @@ export default function Home() {
   }, [prompt]);
 
   return (
-    <div className="p-5 md:p-20 flex flex-col">
-      <h1 className={`text-2xl font-bold flex justify-center m-2 p-5 md:p-10`}>
-        Let&#39;s plan your next trip with us!
-      </h1>
-      <Form submitAction={handleSubmit} prompt={prompt} setPromptAction={setPrompt} textareaRef={textareaRef}/>
-      {isLoading && response.length === 0 && <Loading/>}
-      {response && (
-          <div className="w-full mt-5 p-2 flex flex-col">
-            <Markdown>
-              {response}
-            </Markdown>
-          </div>
-      )}
+    <div className="p-5 md:p-20 w-full flex flex-col justify-center items-center">
+      <div className="w-xs md:w-2xl">
+        <h1 className={`text-xl md:text-2xl font-bold text-center m-2 p-5 md:p-10`}>
+          Let&#39;s plan your next trip with us!
+        </h1>
+        <Form submitAction={handleSubmit} prompt={prompt} setPromptAction={setPrompt} textareaRef={textareaRef}/>
+        {isLoading && response.length === 0 && <Loading/>}
+        {response && (
+            <div className="w-full mt-5 p-2 flex flex-col">
+              <Markdown>
+                {response}
+              </Markdown>
+            </div>
+        )}
+      </div>
     </div>
   );
 }
