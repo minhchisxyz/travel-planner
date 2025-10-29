@@ -8,13 +8,17 @@ export async function POST(req: Request) {
   try {
     const response = await ai.models.generateContentStream({
       model: 'gemini-2.5-flash',
-      contents: `${prompt}. Return only 3 to 5 points showing the most important things.`,
+      contents: `Prompt: ${prompt}. 
+      Answer in the language as in the prompt. 
+      The prompt should be about planning a trip, if not return a sentence says that you can only generates answer related to travel. 
+      Return only 3 to 5 points showing the most important things in the format of bullet points, also including the markdown of the bullet points so that the answer can be rendered in markdown. At the end, wish a good trip.`,
     });
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
         for await (const chunk of response) {
+          console.log(chunk.text)
           controller.enqueue(encoder.encode(chunk.text));
         }
         controller.close();
