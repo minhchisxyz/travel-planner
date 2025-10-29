@@ -18,7 +18,6 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         for await (const chunk of response) {
-          console.log(chunk.text)
           controller.enqueue(encoder.encode(chunk.text));
         }
         controller.close();

@@ -1,16 +1,23 @@
 'use client'
 
 import {FormEvent, useEffect, useRef, useState} from "react";
-import Markdown from "react-markdown";
 import Form from "@/app/ui/form";
 import Loading from "@/app/ui/loading";
+import Chat from "@/app/ui/chat";
 
+export type PromptResponse = {
+  key: string,
+  prompt?: string;
+  response?: string;
+};
 
 export default function Home() {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [chat, setChat] = useState<PromptResponse[]>([])
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const chatRef = useRef<PromptResponse[]>([])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,6 +27,12 @@ export default function Home() {
 
     const formData = new FormData(e.currentTarget);
     const prompt = formData.get('prompt') as string;
+
+    setChat((prev) => {
+      const next = [...prev, { key: new Date().toISOString(), prompt, response: "" }];
+      chatRef.current = next;
+      return next;
+    });
 
     try {
       const response = await fetch('/api/chat', {
@@ -36,11 +49,23 @@ export default function Home() {
           .pipeThrough(new TextDecoderStream())
           .getReader();
 
+      let fullResponse = "";
+
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
+        fullResponse += value;
+        setResponse(fullResponse);
 
-        setResponse((prev) => prev + value);
+        setChat((prev) => {
+          const updated = [...prev];
+          const lastIdx = updated.length - 1;
+          if (lastIdx >= 0) {
+            updated[lastIdx] = { ...updated[lastIdx], response: fullResponse };
+          }
+          chatRef.current = updated;
+          return updated;
+        });
       }
 
     } catch (error) {
@@ -66,14 +91,10 @@ export default function Home() {
           Let&#39;s plan your next trip with us!
         </h1>
         <Form submitAction={handleSubmit} prompt={prompt} setPromptAction={setPrompt} textareaRef={textareaRef}/>
-        {isLoading && response.length === 0 && <Loading/>}
-        {response && (
-            <div className="w-full mt-5 p-2 flex flex-col">
-              <Markdown>
-                {response}
-              </Markdown>
-            </div>
-        )}
+        <div className="h-5">
+          {isLoading && response.length === 0 && <Loading/>}
+        </div>
+        <Chat chat={chat}/>
       </div>
     </div>
   );
