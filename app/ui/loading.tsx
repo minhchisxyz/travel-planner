@@ -7,7 +7,7 @@ export default function Loading() {
             h-6
             rounded-full
             animate-spin
-            border-2 border-solid border-blue-300 border-t-transparent
+            border-2 border-solid border-blue-700 border-t-transparent
           "></div>
         <span>Wait a minute, I&#39;m thinking...</span>
       </div>
