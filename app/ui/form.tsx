@@ -36,7 +36,7 @@ export default function Form({ submitAction, textareaRef, prompt, setPromptActio
               placeholder="Tell us more about your trip"
               rows={1}
               required
-              className="w-full px-4 py-1 resize-none overflow-hidden
+              className="w-full px-4 py-1 resize-none
                  placeholder:text-gray-500 focus:outline-none text-sm md:text-lg"
           />
           <div className="basis-10 flex justify-center items-center">
