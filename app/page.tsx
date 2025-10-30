@@ -29,7 +29,7 @@ export default function Home() {
     const prompt = formData.get('prompt') as string;
 
     setChat((prev) => {
-      const next = [...prev, { key: new Date().toISOString(), prompt, response: "" }];
+      const next = [{ key: new Date().toISOString(), prompt, response: "" }, ...prev];
       chatRef.current = next;
       return next;
     });
@@ -59,10 +59,7 @@ export default function Home() {
 
         setChat((prev) => {
           const updated = [...prev];
-          const lastIdx = updated.length - 1;
-          if (lastIdx >= 0) {
-            updated[lastIdx] = { ...updated[lastIdx], response: fullResponse };
-          }
+          updated[0] = { ...updated[0], response: fullResponse };
           chatRef.current = updated;
           return updated;
         });
