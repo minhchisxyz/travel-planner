@@ -85,7 +85,7 @@ export default function Home() {
   }, [prompt]);
 
   return (
-    <div className="p-5 md:p-20 w-full flex flex-col justify-center items-center">
+    <div className="p-5 md:px-20 md:py-10 w-full flex flex-col justify-center items-center">
       <div className="w-xs md:w-2xl">
         <h1 className={`text-xl md:text-2xl font-bold text-center m-2 p-5 md:p-10`}>
           Let&#39;s plan your next trip with us!
