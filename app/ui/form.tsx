@@ -23,9 +23,13 @@ export default function Form({ submitAction, textareaRef, prompt, setPromptActio
     }
   };
 
+  const shadow = 'shadow-[4px_4px_8px_#666666,-4px_-4px_6px_#ffffff]'
+  const hover = 'hover:shadow-none hover:inset-shadow-[-4px_4px_8px_#666666,4px_-4px_6px_#ffffff]'
+  const focus = 'focus-within:shadow-none focus-within:inset-shadow-[-4px_4px_8px_#666666,4px_-4px_6px_#ffffff]'
+
   return (
       <form onSubmit={submitAction} className="flex flex-col content-center items-center">
-        <div className="flex flex-row w-full bg-white/50 p-2 rounded-3xl backdrop-blur-xs shadow-[4px_4px_8px_#666666,-4px_-4px_6px_#ffffff] hover:shadow-none hover:inset-shadow-[-4px_4px_8px_#666666,4px_-4px_6px_#ffffff] transition duration-300 ease-in-out">
+        <div className={`flex flex-row w-full bg-white/50 p-2 rounded-3xl backdrop-blur-xs transition duration-300 ease-in-out ${shadow} ${hover} ${focus}`}>
           <textarea
               id="prompt"
               name="prompt"

@@ -86,7 +86,7 @@ export default function Home() {
   return (
     <div className="static">
       {!responseRef.current && <div className={`absolute text-xl md:text-2xl font-bold text-center flex flex-col items-center justify-center w-full h-screen`}>
-        <span>Let&#39;s plan your next trip with us!</span>
+        <span className={`pt-25`}>Let&#39;s plan your next trip with us!</span>
       </div>}
       <div className="p-5 md:px-20 w-full h-[90vh] overflow-y-scroll flex flex-col items-center">
         <div className="w-xs md:w-2xl">
