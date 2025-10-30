@@ -27,12 +27,7 @@ export default function RootLayout({
     <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-sm md:text-lg min-h-screen relative bg-[url('/mobile_background.png')] md:bg-[url('/desktop_background.png')] bg-no-repeat bg-cover bg-center bg-fixed`}
     >
-    {/*<div
-        className="absolute inset-0 bg-[url('/mobile_background.png')] md:bg-[url('/desktop_background.png')] bg-no-repeat bg-cover bg-center bg-fixed filter blur-xs scale-100"
-        aria-hidden="true"/>*/}
-    <div className="relative z-10">
       {children}
-    </div>
     </body>
     </html>
   );

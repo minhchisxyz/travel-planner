@@ -4,6 +4,7 @@ import {FormEvent, useEffect, useRef, useState} from "react";
 import Form from "@/app/ui/form";
 import Loading from "@/app/ui/loading";
 import Chat from "@/app/ui/chat";
+import {clsx} from "clsx";
 
 export type PromptResponse = {
   key: string,
@@ -29,7 +30,7 @@ export default function Home() {
     const prompt = formData.get('prompt') as string;
 
     setChat((prev) => {
-      const next = [{ key: new Date().toISOString(), prompt, response: "" }, ...prev];
+      const next = [...prev, { key: new Date().toISOString(), prompt, response: "" }];
       chatRef.current = next;
       return next;
     });
@@ -59,7 +60,8 @@ export default function Home() {
 
         setChat((prev) => {
           const updated = [...prev];
-          updated[0] = { ...updated[0], response: fullResponse };
+          const lastIndex = updated.length - 1;
+          updated[lastIndex] = { ...updated[lastIndex], response: fullResponse };
           chatRef.current = updated;
           return updated;
         });
@@ -82,16 +84,28 @@ export default function Home() {
   }, [prompt]);
 
   return (
-    <div className="p-5 md:px-20 md:py-10 w-full flex flex-col justify-center items-center">
-      <div className="w-xs md:w-2xl">
-        <h1 className={`text-xl md:text-2xl font-bold text-center m-2 p-5 md:p-10`}>
-          Let&#39;s plan your next trip with us!
-        </h1>
-        <Form submitAction={handleSubmit} prompt={prompt} setPromptAction={setPrompt} textareaRef={textareaRef}/>
-        <div className="h-5">
-          {isLoading && response.length === 0 && <Loading/>}
+    <div>
+      <div className="p-5 md:px-20 md:py-10 w-full h-screen flex flex-col justify-center items-center">
+        <div className={clsx(
+            'w-xs md:w-2xl h-screen flex flex-col',
+            {
+              'justify-center items-center': response.length === 0,
+              'justify-start items-start': response.length > 0,
+            }
+        )}>
+          {response.length === 0 && <h1 className={`text-xl md:text-2xl font-bold text-center m-2 p-5 md:p-10`}>
+            Let&#39;s plan your next trip with us!
+          </h1>}
+          <Chat chat={chat}/>
         </div>
-        <Chat chat={chat}/>
+      </div>
+      <div className="sticky bottom-8 flex flex-col items-center">
+        <div className="w-1/2">
+          <div className="h-5 pb-10">
+            {isLoading && response.length === 0 && <Loading/>}
+          </div>
+          <Form submitAction={handleSubmit} prompt={prompt} setPromptAction={setPrompt} textareaRef={textareaRef}/>
+        </div>
       </div>
     </div>
   );

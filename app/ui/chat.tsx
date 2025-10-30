@@ -6,10 +6,10 @@ function Conversation({ conversation } : {
 }) {
   return (
       <div className="flex flex-col gap-4">
-        <div className="self-end max-w-2/3 py-2 px-4 border border-[#dadce0] rounded-3xl rounded-tr-md bg-[#e9eef6]">
+        <div className="self-end max-w-2/3 py-2 px-4 border border-[#dadce0] rounded-3xl rounded-tr-md bg-white/50 backdrop-blur-xs">
           { conversation.prompt }
         </div>
-        {conversation.response && <div className="py-2 px-4 border border-[#dadce0] rounded-3xl rounded-tl-md bg-[#e9eef6]">
+        {conversation.response && <div className="py-2 px-4 border border-[#dadce0] rounded-3xl rounded-tl-md bg-white/50 backdrop-blur-xs">
           <Markdown>
             {conversation.response}
           </Markdown>
